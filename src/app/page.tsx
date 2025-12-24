@@ -2,14 +2,14 @@
 import { useEffect, useState } from "react";
 
 export default function Home() {
-	const [apiData, setApiData] = useState<any>(null);
+	const [apiData, setApiData] = useState<Record<string, string> | null>(null);
        const [loading, setLoading] = useState(true);
 
 	       useEffect(() => {
 		       fetch("/api/dummy")
 			       .then((res) => res.json())
 			       .then((data) => {
-				       setApiData(data);
+				       setApiData(data as Record<string, string>);
 				       setLoading(false);
 			       })
 			       .catch(() => setLoading(false));

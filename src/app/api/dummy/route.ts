@@ -1,8 +1,6 @@
 
 import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
-
 export async function GET() {
   // Fetch data from a real-world dummy API
   try {

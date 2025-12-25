@@ -1,11 +1,3 @@
-/**
- * For more details on how to configure Wrangler, refer to:
- * https://developers.cloudflare.com/workers/wrangler/configuration/
- */
-/**
- * For more details on how to configure Wrangler, refer to:
- * https://developers.cloudflare.com/workers/wrangler/configuration/
- */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "my-next-app",
@@ -20,14 +12,10 @@
 		"directory": ".open-next/assets"
 	},
 	"images": {
-		// Enable image optimization
-		// see https://opennext.js.org/cloudflare/howtos/image
 		"binding": "IMAGES"
 	},
 	"services": [
 		{
-			// Self-reference service binding, the service name must match the worker name
-			// see https://opennext.js.org/cloudflare/caching
 			"binding": "WORKER_SELF_REFERENCE",
 			"service": "my-next-app"
 		}
@@ -35,31 +23,37 @@
 	"observability": {
 		"enabled": true
 	},
-	"d1_databases": [
-        {
-          "binding": "DB",
-          "database_name": "test-items",
-          "database_id": "986c9dae-259f-491f-9318-0c0f123721c8",
-          "migrations_dir": "./drizzle/migrations",
-		  "remote": true
-        }
-      ]
-	/**
-	 * Smart Placement
-	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
-	 */
-	// "placement": {  "mode": "smart" }
-	/**
-	 * Bindings
-	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
-	 * databases, object storage, AI inference, real-time communication and more.
-	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
-	 */
-	/**
-	 * Environment Variables
-	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
-	 * Note: Use secrets to store sensitive data.
-	 * https://developers.cloudflare.com/workers/configuration/secrets/
-	 */
-	// "vars": {  "MY_VARIABLE": "production_value" }
+	// "d1_databases": [
+    //     {
+    //       "binding": "DB",
+    //       "database_name": "test-items",
+    //       "database_id": "986c9dae-259f-491f-9318-0c0f123721c8",
+    //       "migrations_dir": "./drizzle/migrations",
+	// 	  "remote": true
+    //     }
+	// ],
+	"env": {
+		"DEV": {
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "test-items",
+					"database_id": "986c9dae-259f-491f-9318-0c0f123721c8",
+					"migrations_dir": "./drizzle/migrations",
+					"remote": true
+				}
+			]
+		},
+		"PROD": {
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "test-items",
+					"database_id": "986c9dae-259f-491f-9318-0c0f123721c8",
+					"migrations_dir": "./drizzle/migrations",
+					"remote": true
+				}
+			]
+		}
+	}
 }

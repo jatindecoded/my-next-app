@@ -1,5 +1,5 @@
 {
-	"name": "my-next-app",
+	"name": "inventory-management-system",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
@@ -9,8 +9,9 @@
 		"lint": "next lint",
 		"deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
 		"upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
-		"preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-		"cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts"
+		"preview:dev": "opennextjs-cloudflare build && opennextjs-cloudflare preview --env DEV",
+		"preview:prod": "opennextjs-cloudflare build && opennextjs-cloudflare preview --env PROD",
+		"cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts --env DEV"
 	},
 	"dependencies": {
 		"@cloudflare/workers-types": "^4.20251224.0",

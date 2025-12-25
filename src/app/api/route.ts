@@ -2,7 +2,7 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { NextResponse } from 'next/server';
 import { drizzle } from 'drizzle-orm/d1';
-import { items } from '../../../../drizzle/schema';
+import { items } from '../../../drizzle/schema';
 
 export async function GET() {
   try {

@@ -1,6 +1,6 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-export const items = sqliteTable('tes', {
+export const items = sqliteTable('test', {
   id: text('id'),
   name: text('name').notNull(),
 });

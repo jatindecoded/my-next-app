@@ -70,7 +70,7 @@ export const template_audit_points = sqliteTable(
   'template_audit_points',
   {
     id: text('id').primaryKey(),
-    template_id: text('template_id').notNull(),
+    template_audit_id: text('template_audit_id').notNull(),
     applicable_level_type: text('applicable_level_type', {
       enum: ['UNIT', 'ROOM'],
     }).notNull(),
@@ -83,7 +83,7 @@ export const template_audit_points = sqliteTable(
   },
   (table) => [
     foreignKey({
-      columns: [table.template_id],
+      columns: [table.template_audit_id],
       foreignColumns: [audit_templates.id],
     }),
   ],

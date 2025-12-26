@@ -35,11 +35,11 @@ const audit_templates: AuditTemplate[] = [
 ];
 
 const template_audit_points: TemplateAuditPoint[] = [
-  { id: 'pt_room_clean', template_id: 'tmpl_1', applicable_level_type: 'ROOM', name: 'Room Cleanliness', is_mandatory: true, severity: 'LOW', order_index: 1 },
-  { id: 'pt_room_tiles', template_id: 'tmpl_1', applicable_level_type: 'ROOM', name: 'Tiles Alignment', is_mandatory: true, severity: 'MEDIUM', order_index: 2 },
-  { id: 'pt_room_water', template_id: 'tmpl_1', applicable_level_type: 'ROOM', name: 'Water Leakage', is_mandatory: false, severity: 'HIGH', order_index: 3 },
-  { id: 'pt_unit_doors', template_id: 'tmpl_1', applicable_level_type: 'UNIT', name: 'Door Fittings', is_mandatory: true, severity: 'MEDIUM', order_index: 1 },
-  { id: 'pt_unit_paint', template_id: 'tmpl_1', applicable_level_type: 'UNIT', name: 'Paint Quality', is_mandatory: false, severity: 'LOW', order_index: 2 },
+  { id: 'pt_room_clean', template_audit_id: 'tmpl_1', applicable_level_type: 'ROOM', name: 'Room Cleanliness', is_mandatory: true, severity: 'LOW', order_index: 1 },
+  { id: 'pt_room_tiles', template_audit_id: 'tmpl_1', applicable_level_type: 'ROOM', name: 'Tiles Alignment', is_mandatory: true, severity: 'MEDIUM', order_index: 2 },
+  { id: 'pt_room_water', template_audit_id: 'tmpl_1', applicable_level_type: 'ROOM', name: 'Water Leakage', is_mandatory: false, severity: 'HIGH', order_index: 3 },
+  { id: 'pt_unit_doors', template_audit_id: 'tmpl_1', applicable_level_type: 'UNIT', name: 'Door Fittings', is_mandatory: true, severity: 'MEDIUM', order_index: 1 },
+  { id: 'pt_unit_paint', template_audit_id: 'tmpl_1', applicable_level_type: 'UNIT', name: 'Paint Quality', is_mandatory: false, severity: 'LOW', order_index: 2 },
 ];
 
 // Mutable stores
@@ -134,7 +134,7 @@ export function getStructureNode(projectId: string, nodeId: string) {
   const audit_points = template_audit_points
     .filter(
       (p) =>
-        p.template_id === tmpl.id &&
+        p.template_audit_id === tmpl.id &&
         (p.applicable_level_type === node.level_type),
     )
     .sort((a, b) => a.order_index - b.order_index);
@@ -147,7 +147,7 @@ export function getChecklist(sessionId: string, nodeId: string) {
   if (!node) throw new Error('Node not found');
   const tmpl = audit_templates.find((t) => t.project_id === node.project_id)!;
   const points = template_audit_points
-    .filter((p) => p.template_id === tmpl.id && p.applicable_level_type === (node.level_type === 'ROOM' ? 'ROOM' : node.level_type === 'UNIT' ? 'UNIT' : 'ROOM'))
+    .filter((p) => p.template_audit_id === tmpl.id && p.applicable_level_type === (node.level_type === 'ROOM' ? 'ROOM' : node.level_type === 'UNIT' ? 'UNIT' : 'ROOM'))
     .sort((a, b) => a.order_index - b.order_index);
   return { node_name: node.name, audit_points: points };
 }

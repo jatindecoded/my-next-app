@@ -26,9 +26,13 @@ export default function LayoutClient({ children }: { children: ReactNode }) {
           </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+            className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg border border-gray-200"
+            aria-label={mobileMenuOpen ? 'Close navigation' : projectId ? 'Open project tree and menu' : 'Open navigation'}
           >
-            {mobileMenuOpen ? <IconX size={24} /> : <IconMenu2 size={24} />}
+            {mobileMenuOpen ? <IconX size={22} /> : <IconMenu2 size={22} />}
+            <span className="text-sm font-semibold leading-none">
+              {mobileMenuOpen ? 'Close' : projectId ? `View Project Tree` : 'Menu'}
+            </span>
           </button>
         </div>
       </nav>

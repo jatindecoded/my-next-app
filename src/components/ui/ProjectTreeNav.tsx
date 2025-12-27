@@ -64,8 +64,8 @@ function TreeNodeItem({
           {/* {node.isAuditable && (
             <IconCircleCheck size={12} className="text-green-600 flex-shrink-0" />
           )} */}
-          <span className="truncate">{node.name}</span>
-          <span className="text-xs text-muted-foreground uppercase font-semibold tracking-wide">
+          <span className="truncate font-bold text-sm">{node.name}</span>
+          <span className="text-xs text-muted-foreground uppercase font-semibold font-mono">
             {node.level_type}
           </span>
         </Link>
@@ -131,8 +131,8 @@ export default function ProjectTreeNav({ projectId, role }: ProjectTreeNavProps)
 
   return (
     <div className="space-y-1">
-      <div className="text-[10px] uppercase tracking-wide text-gray-500 font-semibold px-2 mb-2">
-        Project Structure
+      <div className="text-xs uppercase tracking-wide text-gray-500 font-semibold px-2 mb-2">
+        Project Structure Tree
       </div>
       <TreeNodeItem
         node={rootNode}

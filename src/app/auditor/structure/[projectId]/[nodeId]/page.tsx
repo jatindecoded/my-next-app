@@ -6,6 +6,10 @@ import Link from 'next/link';
 //
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageHeader from '@/components/ui/PageHeader';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { IconAsterisk, IconLockOpen, IconPencilCheck, IconPlaylistAdd, IconStar } from '@tabler/icons-react';
 
 interface TreeNode {
   id: string;
@@ -96,7 +100,7 @@ export default function StructureDetail() {
   return (
     <div>
       {/* Mobile sticky breadcrumb */}
-      <div className="border-b border-gray-200 p-4 sticky top-0 z-10 bg-white/90 backdrop-blur md:hidden">
+      <div className=" -mx-6 sticky top-0 py-4 z-10 backdrop-blur-xl">
         <Breadcrumbs
           items={[
             { label: 'Project', href: `/auditor/projects/${projectId}` },
@@ -104,9 +108,10 @@ export default function StructureDetail() {
             { label: node.name },
           ]}
         />
+        <PageHeader title={node.name} subtitle={node.level_type} align="center" />
       </div>
 
-      {/* Desktop breadcrumb + header */}
+      {/* Desktop breadcrumb + header
       <div className="hidden md:block">
         <Breadcrumbs
           size="sm"
@@ -118,140 +123,125 @@ export default function StructureDetail() {
           ]}
         />
         <PageHeader title={node.name} subtitle={node.level_type} align="center" />
-      </div>
+      </div> */}
 
-      <div className="space-y-6 max-w-6xl mx-auto">
+      <div className="space-y-6 max-w-6xl mx-auto px-4 md:px-0">
         {/* Check Points (if auditable) */}
         {node.isAuditable && auditPoints.length > 0 && (
           <div>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Check Points</h2>
+            <div className="flex flex-col md:flex-row items-center justify-between mb-4 gap-4"> 
+              <div className=''>
+                {/* <div className="text-sm text-gray-500">Checks</div> */}
+                <h2 className="text-md font-bold text-gray-900">CHECK POINTS <span className='text-xs text-muted-foreground'>for {node.name}</span></h2>
+              </div>
               <div className="flex items-center gap-2">
-                <button
+                {/* <Button
+                  variant="outline"
+                  size="sm"
                   onClick={() =>
                     setCollapseAll((prev) => {
                       const next = !prev;
-                      // Optionally set explicit states for current points to match global toggle
                       const map: Record<string, boolean> = {};
                       for (const p of auditPoints) map[p.id] = next;
                       setCollapsedHistory(map);
                       return next;
                     })
                   }
-                  className="btn btn-outline"
                 >
-                  {collapseAll ? 'Show History' : 'Hide History'}
-                </button>
-                <button
-                  onClick={() => router.push(`/auditor/audit/${projectId}/${nodeId}`)}
-                  className="btn btn-primary"
-                >
-                  Start Check
-                </button>
+                  {collapseAll ? 'Show history' : 'Hide history'}
+                </Button> */}
+                <Button size="sm" className='bg-green-600 hover:bg-green-700' onClick={() => router.push(`/auditor/audit/${projectId}/${nodeId}`)}>
+                  <IconPencilCheck/> Start check
+                </Button>
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-              {auditPoints.map((point) => (
-                <div
-                  key={point.id}
-                  className="card card-shadow border-indigo-100"
-                >
-                  <div className="flex items-start gap-2">
-                    <div className="flex-1">
-                      <div className="font-medium text-gray-900 text-sm">{point.name}</div>
-                      <div className="flex gap-2 mt-1">
-                        <span
-                          className={`text-xs px-2 py-1 rounded ${
-                            point.severity === 'HIGH'
-                              ? 'bg-rose-100 text-rose-700'
-                              : point.severity === 'MEDIUM'
-                                ? 'bg-amber-100 text-amber-700'
-                                : 'bg-blue-100 text-blue-700'
-                          }`}
-                        >
-                          {point.severity}
-                        </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4">
+              {auditPoints.map((point) => {
+                const severityVariant =
+                  point.severity === 'HIGH'
+                    ? 'destructive'
+                    : point.severity === 'MEDIUM'
+                      ? 'secondary'
+                      : 'default';
+
+                return (
+                  <Card key={point.id} className="">
+                    <CardHeader className="flex flex-col gap-2">
+                      <CardTitle className="text-base">{point.name}</CardTitle>
+                      <div className="flex items-center gap-2">
+                        {/* <Badge variant={severityVariant}>{point.severity}</Badge> */}
                         {point.is_mandatory && (
-                          <span className="text-xs font-bold text-rose-700">
-                            REQUIRED
-                          </span>
+                          <Badge className="font-bold bg-red-100 text-red-600" variant="destructive">
+                            {<IconAsterisk />}Required
+                          </Badge>
                         )}
                       </div>
-                      {point.history && point.history.length > 0 && (
-                        <div className="mt-3 border-t border-gray-200 pt-2">
-                          <div className="flex items-center justify-between">
-                            <div className="text-xs text-gray-600">Previous checks</div>
-                            <button
-                              onClick={() =>
-                                setCollapsedHistory((prev) => ({
-                                  ...prev,
-                                  [point.id]: !(prev[point.id] ?? collapseAll),
-                                }))
-                              }
-                              className="text-xs text-indigo-600 hover:text-indigo-700"
-                            >
-                              {(collapsedHistory[point.id] ?? collapseAll) ? 'Show' : 'Hide'}
-                            </button>
+                    </CardHeader>
+                    {!collapseAll && (
+                      <CardContent className="border-t border-gray-100 pt-4">
+                        <>
+                          <div className="flex items-center justify-between text-xs text-gray-600">
+                            <span>Previous checks</span>
                           </div>
-                          {!(collapsedHistory[point.id] ?? collapseAll) && (
-                            <div className="space-y-1 mt-1">
-                              {point.history.map((h) => (
-                                <div key={h.item_id} className="flex items-center justify-between text-xs">
+                          <div className="space-y-2 mt-2 text-xs">
+                              {point.history ? point.history?.map((h) => (
+                                <div key={h.item_id} className="flex items-center justify-between tracking-tight">
                                   <div className="flex items-center gap-2">
-                                    <span
-                                      className={`px-1.5 py-0.5 rounded font-medium ${
-                                        h.status === 'PASS'
-                                          ? 'bg-green-100 text-green-800'
-                                          : 'bg-red-100 text-red-800'
-                                      }`}
-                                    >
-                                      {h.status}
-                                    </span>
-                                    <span className="text-gray-700">{h.auditor_name}</span>
-                                    <span className="text-gray-500">
+
+                                    <span className="text-gray-500 font-mono">
                                       {new Date(h.created_at).toLocaleDateString()}
                                     </span>
+                                    <Badge
+                                      variant={h.status === 'PASS' ? 'secondary' : 'destructive'}
+                                      className="px-2 py-0.5 font-mono"
+                                    >
+                                      {h.status}
+                                    </Badge>
+                                    <span className="text-gray-800 font-mono">{h.auditor_name}</span>
                                   </div>
-                                  {h.has_media && (
-                                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded font-medium">Photo</span>
-                                  )}
+                                  {/* {h.has_media && <Badge variant="secondary">Photo</Badge>} */}
                                 </div>
-                              ))}
+                              )) : 
+                              <div className='text-sx'>
+                              No previous checks available
+                              </div>
+                              }
                             </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                        </>
+                      </CardContent>
+                    )}
+                  </Card>
+                );
+              })}
             </div>
           </div>
         )}
 
         {/* Child Nodes */}
         {node.children && node.children.length > 0 && (
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-3">
-              {node.children[0].level_type}s
+          <div className='pt-8'>
+            <h2 className="text-md font-bold text-gray-900 mb-3">
+              {node.children[0].level_type}S <span className="text-xs text-muted-foreground font-semibold">in {node.name}</span>
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
               {node.children.map((child) => (
-                <button
+                <Card
                   key={child.id}
+                  className="transition-all cursor-pointer"
                   onClick={() =>
                     router.push(
                       `/auditor/structure/${projectId}/${child.id}`,
                     )
                   }
-                  className="card hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left"
                 >
-                  <div className="text-sm text-gray-500">{child.level_type}</div>
-                  <div className="font-medium text-gray-900">{child.name}</div>
-                  {child.isAuditable && (
-                    <div className="badge bg-emerald-50 text-emerald-700 mt-2">Auditable</div>
-                  )}
-                </button>
+                  <CardHeader>
+                    <div className="text-xs font-semibold text-gray-400">{child.level_type}</div>
+                    <CardTitle className="text-xl">{child.name}</CardTitle>
+                  </CardHeader>
+                  <CardFooter>
+                    {child.isAuditable && <Badge variant="secondary"><IconLockOpen />Auditable</Badge>}
+                  </CardFooter>
+                </Card>
               ))}
             </div>
           </div>

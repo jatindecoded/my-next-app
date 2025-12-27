@@ -5,6 +5,8 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { IconCompass, IconCircleCheck } from '@tabler/icons-react';
 import PageHeader from '@/components/ui/PageHeader';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 interface TreeNode {
   id: string;
@@ -76,23 +78,23 @@ export default function ProjectDetail() {
         {rootNode.children && rootNode.children.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {rootNode.children.map((child) => (
-              <button
+              <Card
                 key={child.id}
-                onClick={() =>
-                  router.push(`/auditor/structure/${projectId}/${child.id}`)
-                }
-                className="card card-shadow hover:-translate-y-0.5 hover:border-indigo-400 hover:shadow-lg transition-all text-left focus-ring"
+                className="card-shadow hover:-translate-y-0.5 transition-all cursor-pointer"
+                onClick={() => router.push(`/auditor/structure/${projectId}/${child.id}`)}
               >
-                <div className="text-xs uppercase tracking-wide text-gray-500 flex items-center gap-2">
-                  <IconCompass size={16} /> {child.level_type}
-                </div>
-                <div className="font-semibold text-gray-900 text-lg mt-1">{child.name}</div>
-                {child.isAuditable && (
-                  <div className="mt-2 badge bg-emerald-50 text-emerald-700">
-                    <IconCircleCheck size={14} /> Auditable
+                <CardContent className="space-y-2">
+                  <div className="text-xs uppercase tracking-wide text-gray-500 flex items-center gap-2">
+                    {child.level_type}
                   </div>
-                )}
-              </button>
+                  <CardTitle className="text-lg">{child.name}</CardTitle>
+                  {child.isAuditable && (
+                    <Badge variant="secondary" className="mt-1 inline-flex items-center gap-1">
+                      <IconCircleCheck size={14} /> Auditable
+                    </Badge>
+                  )}
+                </CardContent>
+              </Card>
             ))}
           </div>
         ) : (

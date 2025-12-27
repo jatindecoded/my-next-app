@@ -2,12 +2,21 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface Project {
   id: string;
   name: string;
   location: string;
   created_at: number;
+}
+
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 12) return 'Good Morning';
+  if (hour >= 12 && hour < 18) return 'Good Afternoon';
+  return 'Good Evening';
 }
 
 export default function AuditorDashboard() {
@@ -44,7 +53,9 @@ export default function AuditorDashboard() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Auditor</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {getGreeting()}, Auditor!
+          </h1>
           <p className="text-gray-600">Select a project to start or continue checks</p>
         </div>
 
@@ -54,31 +65,25 @@ export default function AuditorDashboard() {
             <p className="text-gray-500 text-lg">No projects available</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex justify-center gap-6 flex-wrap">
             {projects.map((project) => (
-              <Link
-                key={project.id}
-                href={`/auditor/projects/${project.id}`}
-                className="block bg-white border border-gray-200 rounded-xl card-shadow hover:border-indigo-400 hover:shadow-lg transition-all"
-              >
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {project.name}
-                  </h3>
-                  {project.location && (
-                    <p className="text-sm text-gray-600 mb-4">
-                      {project.location}
-                    </p>
-                  )}
-                  <div className="text-xs text-gray-400">
-                    Created:{' '}
-                    {new Date(project.created_at).toLocaleDateString()}
-                  </div>
-                  <div className="mt-4 pt-4 border-t border-gray-100">
-                    <span className="btn btn-primary inline-block">Start Check</span>
-                  </div>
-                </div>
-              </Link>
+              <Card key={project.id} className="card-shadow hover:-translate-y-0.5 transition-all w-full max-w-lg text-center">
+                <Link href={`/auditor/projects/${project.id}`} className="block h-full">
+                  <CardContent className="my-8">
+                    <CardTitle className="text-xl">{project.name}</CardTitle>
+                    {project.location && (
+                      <p className="text-sm text-gray-600">{project.location}</p>
+                    )}
+                    <div className="text-xs text-gray-400">
+                      Created: {new Date(project.created_at).toLocaleDateString()}
+                    </div>
+                  </CardContent>
+                  <CardFooter>
+
+                      <Button className="w-full justify-center">Start Check</Button>
+                  </CardFooter>
+                </Link>
+              </Card>
             ))}
           </div>
         )}

@@ -16,6 +16,8 @@ const geistMono = Geist_Mono({
 const jetBrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  style: ["normal", "italic"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -33,7 +35,7 @@ export default function RootLayout({
 			<head>
 				<link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
 			</head>
-			<body className={`${geistSans.variable} ${jetBrainsMono.variable} antialiased`}>
+			<body className={`${geistSans.variable} ${jetBrainsMono.variable} tracking-tight antialiased`}>
 				{/* Mobile top nav */}
 				<nav className="border-b border-gray-200 bg-white/90 backdrop-blur md:hidden">
 					<div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -66,7 +68,7 @@ export default function RootLayout({
 							</a>
 						</nav>
 					</aside>
-					<main className="flex-1 md:ml-64 bg-gray-50">
+					<main className="flex-1 md:ml-64">
 						<div className="max-w-6xl mx-auto px-6 py-8">
 							{children}
 						</div>

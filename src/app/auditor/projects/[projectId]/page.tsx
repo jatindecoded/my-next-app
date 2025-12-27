@@ -69,14 +69,14 @@ export default function ProjectDetail() {
   return (
     <div>
       {/* Header */}
-      <div className="md:block hidden">
+      <div className="py-16">
         <PageHeader title={projectName} subtitle="Select a section to inspect" align="center" />
       </div>
 
       {/* Children Grid */}
       <div className="max-w-6xl mx-auto">
         {rootNode.children && rootNode.children.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {rootNode.children.map((child) => (
               <Card
                 key={child.id}
@@ -84,10 +84,12 @@ export default function ProjectDetail() {
                 onClick={() => router.push(`/auditor/structure/${projectId}/${child.id}`)}
               >
                 <CardContent className="space-y-2">
-                  <div className="text-xs uppercase tracking-wide text-gray-500 flex items-center gap-2">
-                    {child.level_type}
-                  </div>
-                  <CardTitle className="text-lg">{child.name}</CardTitle>
+                  <CardTitle className="text-lg">
+                    <div className="text-xs uppercase tracking-wide text-muted-foreground font-mono font-bold">
+                      {child.level_type}
+                    </div>
+                    {child.name}
+                  </CardTitle>
                   {child.isAuditable && (
                     <Badge variant="secondary" className="mt-1 inline-flex items-center gap-1">
                       <IconCircleCheck size={14} /> Auditable

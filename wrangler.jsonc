@@ -44,7 +44,7 @@
 				}
 			]
 		},
-		"prod": {
+		"production": {
 			"d1_databases": [
 				{
 					"binding": "DB",

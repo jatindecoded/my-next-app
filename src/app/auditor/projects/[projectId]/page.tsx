@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { IconCompass, IconCircleCheck } from '@tabler/icons-react';
+import PageHeader from '@/components/ui/PageHeader';
 
 interface TreeNode {
   id: string;
@@ -42,7 +44,7 @@ export default function ProjectDetail() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="flex items-center justify-center min-h-screen">
         <p className="text-gray-600">Loading...</p>
       </div>
     );
@@ -63,32 +65,33 @@ export default function ProjectDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div>
       {/* Header */}
-      <div className="border-b border-gray-200 p-4 sticky top-0 z-10 bg-white">
-        <Link
-          href="/auditor"
-          className="text-indigo-600 hover:text-indigo-700 font-medium text-sm mb-2 inline-block"
-        >
-          ← Projects
-        </Link>
-        <h1 className="text-xl font-semibold text-gray-900">{projectName}</h1>
+      <div className="md:block hidden">
+        <PageHeader title={projectName} subtitle="Select a section to inspect" align="center" />
       </div>
 
       {/* Children Grid */}
-      <div className="p-4">
+      <div className="max-w-6xl mx-auto">
         {rootNode.children && rootNode.children.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {rootNode.children.map((child) => (
               <button
                 key={child.id}
                 onClick={() =>
                   router.push(`/auditor/structure/${projectId}/${child.id}`)
                 }
-                className="p-4 border border-gray-200 rounded-lg hover:border-indigo-400 hover:bg-indigo-50 transition-all text-left"
+                className="card card-shadow hover:-translate-y-0.5 hover:border-indigo-400 hover:shadow-lg transition-all text-left focus-ring"
               >
-                <div className="text-sm text-gray-500">{child.level_type}</div>
-                <div className="font-medium text-gray-900">{child.name}</div>
+                <div className="text-xs uppercase tracking-wide text-gray-500 flex items-center gap-2">
+                  <IconCompass size={16} /> {child.level_type}
+                </div>
+                <div className="font-semibold text-gray-900 text-lg mt-1">{child.name}</div>
+                {child.isAuditable && (
+                  <div className="mt-2 badge bg-emerald-50 text-emerald-700">
+                    <IconCircleCheck size={14} /> Auditable
+                  </div>
+                )}
               </button>
             ))}
           </div>

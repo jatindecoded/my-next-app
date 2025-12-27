@@ -3,12 +3,25 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+//
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import PageHeader from '@/components/ui/PageHeader';
+
+interface HistoryEntry {
+  item_id: string;
+  status: 'PASS' | 'FAIL';
+  notes?: string;
+  has_media: boolean;
+  auditor_name: string;
+  created_at: string;
+}
 
 interface AuditPoint {
   id: string;
   name: string;
   severity: 'LOW' | 'MEDIUM' | 'HIGH';
   is_mandatory: boolean;
+  history?: HistoryEntry[];
 }
 
 interface AuditItemResponse {
@@ -28,6 +41,7 @@ export default function AuditChecklist() {
   const params = useParams();
   const projectId = params.projectId as string;
   const nodeId = params.nodeId as string;
+  const defaultShowHistory = process.env.NEXT_PUBLIC_SHOW_HISTORY_DEFAULT === 'false' ? false : true;
   const [auditPoints, setAuditPoints] = useState<AuditPoint[]>([]);
   const [sessionId, setSessionId] = useState<string>('');
   const [responses, setResponses] = useState<Map<string, AuditItemResponse>>(
@@ -37,6 +51,7 @@ export default function AuditChecklist() {
   const [submitting, setSubmitting] = useState(false);
   const [nodeName, setNodeName] = useState<string>('');
   const [breadcrumb, setBreadcrumb] = useState<Breadcrumb[]>([]);
+  const [showHistory, setShowHistory] = useState<boolean>(defaultShowHistory);
 
   useEffect(() => {
     async function initAudit() {
@@ -50,9 +65,9 @@ export default function AuditChecklist() {
         const session = await sessionRes.json() as { id: string };
         setSessionId(session.id);
 
-        // Fetch checklist
+        // Fetch checklist (with optional history)
         const checklistRes = await fetch(
-          `/api/v1/audit-sessions/${session.id}/checklist/${nodeId}`,
+          `/api/v1/audit-sessions/${session.id}/checklist/${nodeId}?includeHistory=${showHistory}`,
         );
         const data = await checklistRes.json() as {
           node_name: string;
@@ -79,7 +94,7 @@ export default function AuditChecklist() {
     }
 
     initAudit();
-  }, [projectId, nodeId]);
+  }, [projectId, nodeId, showHistory]);
 
   const handleStatusChange = (pointId: string, status: 'PASS' | 'FAIL') => {
     const newResponses = new Map(responses);
@@ -153,47 +168,63 @@ export default function AuditChecklist() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Sticky Breadcrumb Header */}
-      <div className="border-b border-gray-200 p-4 sticky top-0 z-10 bg-white">
-        <div className="flex items-center gap-2 text-xs text-gray-600 mb-2 overflow-x-auto">
-          <Link
-            href={`/auditor/projects/${projectId}`}
-            className="text-indigo-600 hover:text-indigo-700 whitespace-nowrap font-medium"
+    <div>
+      {/* Sticky Breadcrumb Header (hidden on desktop, sidebar present) */}
+      <div className="border-b border-gray-200 p-4 sticky top-0 z-10 bg-white/90 backdrop-blur shadow-sm md:hidden">
+        <Breadcrumbs
+          size="xs"
+          items={[
+            { label: 'Project', href: `/auditor/projects/${projectId}` },
+            ...breadcrumb.map((b) => ({ label: b.name, href: `/auditor/structure/${projectId}/${b.id}` })),
+            { label: nodeName },
+          ]}
+        />
+        <div className="mt-2 flex items-center justify-end">
+          <button
+            onClick={() => setShowHistory((v) => !v)}
+            className="btn btn-outline"
           >
-            Project
-          </Link>
-          {breadcrumb.map((crumb) => (
-            <div key={crumb.id} className="flex items-center gap-2">
-              <span>/</span>
-              <span className="whitespace-nowrap">{crumb.name}</span>
-            </div>
-          ))}
-          <span>/</span>
-          <span className="whitespace-nowrap font-medium text-gray-900">
-            {nodeName}
-          </span>
+            {showHistory ? 'Hide History' : 'Show History'}
+          </button>
         </div>
-        <h1 className="text-lg font-semibold text-gray-900">{nodeName}</h1>
       </div>
 
-      {/* Audit Points */}
-      <div className="p-4 space-y-3 pb-24">
+      {/* Desktop breadcrumb + header with action */}
+      <div className="hidden md:block">
+        <Breadcrumbs
+          size="sm"
+          className="mb-2"
+          items={[
+            { label: 'Project', href: `/auditor/projects/${projectId}` },
+            ...breadcrumb.map((b) => ({ label: b.name, href: `/auditor/structure/${projectId}/${b.id}` })),
+            { label: nodeName },
+          ]}
+        />
+        <PageHeader
+          title={nodeName}
+          subtitle="Check Points"
+          align="center"
+          action={
+            <button onClick={() => setShowHistory((v) => !v)} className="btn btn-outline">
+              {showHistory ? 'Hide History' : 'Show History'}
+            </button>
+          }
+        />
+      </div>
+
+      {/* Check Points */}
+      <div className="pb-32 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {auditPoints.map((point) => {
           const response = responses.get(point.id);
           const isAnswered = response !== undefined;
 
           return (
-            <div
-              key={point.id}
-              className="border border-gray-200 rounded-lg p-4"
-            >
+            <div key={point.id} className="card card-shadow">
               {/* Point Header */}
               <div className="flex items-start justify-between gap-2 mb-3">
                 <div className="flex-1">
-                  <h3 className="font-medium text-gray-900 text-sm mb-1">
-                    {point.name}
-                  </h3>
+                  <h3 className="font-medium text-gray-900 text-sm mb-1">{point.name}</h3>
                   <div className="flex gap-1 flex-wrap">
                     <span
                       className={`text-xs font-medium px-2 py-0.5 rounded ${
@@ -228,8 +259,8 @@ export default function AuditChecklist() {
                   onClick={() => handleStatusChange(point.id, 'PASS')}
                   className={`flex-1 py-2 px-3 rounded font-medium text-sm transition-colors ${
                     response?.status === 'PASS'
-                      ? 'bg-green-600 text-white'
-                      : 'bg-white border border-green-300 text-green-700 hover:bg-green-50'
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-white border border-emerald-300 text-emerald-700 hover:bg-emerald-50'
                   }`}
                 >
                   ✓ Pass
@@ -238,8 +269,8 @@ export default function AuditChecklist() {
                   onClick={() => handleStatusChange(point.id, 'FAIL')}
                   className={`flex-1 py-2 px-3 rounded font-medium text-sm transition-colors ${
                     response?.status === 'FAIL'
-                      ? 'bg-red-600 text-white'
-                      : 'bg-white border border-red-300 text-red-700 hover:bg-red-50'
+                      ? 'bg-rose-600 text-white'
+                      : 'bg-white border border-rose-300 text-rose-700 hover:bg-rose-50'
                   }`}
                 >
                   ✗ Fail
@@ -263,6 +294,37 @@ export default function AuditChecklist() {
                 </div>
               )}
 
+              {/* History section */}
+              {showHistory && point.history && point.history.length > 0 && (
+                <div className="mt-2 border-t border-gray-200 pt-2">
+                  <div className="text-xs text-gray-600 mb-1">Previous checks</div>
+                  <div className="space-y-1">
+                    {point.history.map((h) => (
+                      <div key={h.item_id} className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`px-1.5 py-0.5 rounded font-medium ${
+                              h.status === 'PASS'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-red-100 text-red-800'
+                            }`}
+                          >
+                            {h.status}
+                          </span>
+                          <span className="text-gray-700">{h.auditor_name}</span>
+                          <span className="text-gray-500">
+                            {new Date(h.created_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                        {h.has_media && (
+                          <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded font-medium">Photo</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Photo Upload for Failures */}
               {response?.status === 'FAIL' && (
                 <div className="border border-red-200 rounded p-3 bg-red-50">
@@ -282,20 +344,21 @@ export default function AuditChecklist() {
             </div>
           );
         })}
+        </div>
       </div>
 
       {/* Fixed Bottom Actions */}
-      <div className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white p-4 flex gap-2">
+      <div className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white/95 backdrop-blur p-4 flex gap-2">
         <Link
           href={`/auditor/structure/${projectId}/${nodeId}`}
-          className="flex-1 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors text-center text-sm"
+          className="flex-1 btn btn-outline text-center"
         >
           Back
         </Link>
         <button
           onClick={handleSubmitAudit}
           disabled={submitting}
-          className="flex-1 bg-indigo-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-indigo-700 disabled:bg-gray-400 transition-colors text-sm"
+          className="flex-1 btn btn-primary disabled:opacity-60"
         >
           {submitting ? 'Submitting...' : 'Submit'}
         </button>

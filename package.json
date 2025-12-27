@@ -16,6 +16,7 @@
 	"dependencies": {
 		"@cloudflare/workers-types": "^4.20251224.0",
 		"@opennextjs/cloudflare": "^1.14.7",
+		"@tabler/icons-react": "^3.36.0",
 		"drizzle-kit": "^0.31.8",
 		"drizzle-orm": "^0.45.1",
 		"next": "15.5.9",

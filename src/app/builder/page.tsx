@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { IconBuildingSkyscraper, IconListCheck, IconAlertTriangle, IconCircleCheck, IconFolder } from '@tabler/icons-react';
+import PageHeader from '@/components/ui/PageHeader';
 import { useEffect, useState } from 'react';
 
 interface Project {
@@ -42,62 +44,61 @@ export default function BuilderDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <p className="text-lg text-gray-600">Loading projects...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    <div>
+      <div className="space-y-6">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Audit Dashboard
-          </h1>
-          <p className="text-gray-600">
-            Monitor construction audit results and quality metrics
-          </p>
-        </div>
+        <PageHeader title="Audit Dashboard" subtitle="Monitor quality metrics across projects" align="center" />
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <SummaryCard
-            title="Total Projects"
+            title="Projects"
+            icon={<IconBuildingSkyscraper />}
             value={projects.length.toString()}
             color="blue"
           />
           <SummaryCard
-            title="Total Audits"
+            title="Audits"
+            icon={<IconListCheck />}
             value={projects
               .reduce((sum, p) => sum + (p.summary?.total_audits || 0), 0)
               .toString()}
-            color="green"
+            color="indigo"
           />
           <SummaryCard
-            title="Total Defects"
+            title="Defects"
+            icon={<IconAlertTriangle />}
             value={projects
               .reduce((sum, p) => sum + (p.summary?.total_defects || 0), 0)
               .toString()}
-            color="red"
+            color="amber"
           />
           <SummaryCard
             title="Avg Pass Rate"
+            icon={<IconCircleCheck />}
             value={
               (
                 projects.reduce((sum, p) => sum + (p.summary?.pass_rate || 0), 0) /
                   projects.length || 0
               ).toFixed(1) + '%'
             }
-            color="purple"
+            color="emerald"
           />
         </div>
 
         {/* Projects Table */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900">Projects</h2>
+        <div className="card card-shadow">
+          <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+              <IconFolder size={18} /> <span>Projects</span>
+            </h2>
           </div>
 
           {projects.length === 0 ? (
@@ -109,32 +110,32 @@ export default function BuilderDashboard() {
               <table className="w-full">
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                      Project Name
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                      Project
                     </th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide">
                       Location
                     </th>
-                    <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wide">
                       Audits
                     </th>
-                    <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wide">
                       Defects
                     </th>
-                    <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wide">
                       Pass Rate
                     </th>
-                    <th className="px-6 py-3 text-right text-sm font-semibold text-gray-900">
+                    <th className="px-6 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wide">
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-100">
                   {projects.map((project) => (
-                    <tr key={project.id} className="hover:bg-gray-50">
+                    <tr key={project.id} className="hover:bg-gray-50/80">
                       <td className="px-6 py-4">
-                        <p className="font-semibold text-gray-900">
-                          {project.name}
+                        <p className="font-semibold text-gray-900 flex items-center gap-2">
+                          <IconBuildingSkyscraper size={16} /> {project.name}
                         </p>
                       </td>
                       <td className="px-6 py-4">
@@ -143,19 +144,19 @@ export default function BuilderDashboard() {
                         </p>
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                          {project.summary?.total_audits || 0}
+                        <span className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-sm font-medium">
+                          <IconListCheck size={16} /> {project.summary?.total_audits || 0}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-right">
                         <span
-                          className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                          className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${
                             project.summary?.total_defects
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-green-100 text-green-800'
+                              ? 'bg-amber-50 text-amber-800'
+                              : 'bg-emerald-50 text-emerald-700'
                           }`}
                         >
-                          {project.summary?.total_defects || 0}
+                          <IconAlertTriangle size={16} /> {project.summary?.total_defects || 0}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-right">
@@ -168,7 +169,7 @@ export default function BuilderDashboard() {
                           href={`/builder/projects/${project.id}`}
                           className="text-indigo-600 hover:text-indigo-700 font-medium"
                         >
-                          View Details →
+                          View →
                         </Link>
                       </td>
                     </tr>
@@ -186,30 +187,33 @@ export default function BuilderDashboard() {
 function SummaryCard({
   title,
   value,
+  icon,
   color,
 }: {
   title: string;
   value: string;
-  color: 'blue' | 'green' | 'red' | 'purple';
+  icon: React.ReactNode;
+  color: 'blue' | 'indigo' | 'amber' | 'emerald';
 }) {
   const colors = {
-    blue: 'bg-blue-50 border-blue-200',
-    green: 'bg-green-50 border-green-200',
-    red: 'bg-red-50 border-red-200',
-    purple: 'bg-purple-50 border-purple-200',
+    blue: 'bg-blue-50 border-blue-100',
+    indigo: 'bg-indigo-50 border-indigo-100',
+    amber: 'bg-amber-50 border-amber-100',
+    emerald: 'bg-emerald-50 border-emerald-100',
   };
 
   const textColors = {
-    blue: 'text-blue-700',
-    green: 'text-green-700',
-    red: 'text-red-700',
-    purple: 'text-purple-700',
+    blue: 'text-blue-800',
+    indigo: 'text-indigo-800',
+    amber: 'text-amber-800',
+    emerald: 'text-emerald-800',
   };
 
   return (
-    <div className={`${colors[color]} border-2 rounded-lg p-6`}>
-      <p className={`text-sm font-medium ${textColors[color]} mb-2`}>
-        {title}
+    <div className={`${colors[color]} border rounded-lg p-5 card-shadow`}>
+      <p className={`text-sm font-semibold ${textColors[color]} mb-1 flex items-center gap-2`}>
+        <span className="[&>*]:w-4 [&>*]:h-4">{icon}</span>
+        <span>{title}</span>
       </p>
       <p className="text-3xl font-bold text-gray-900">{value}</p>
     </div>

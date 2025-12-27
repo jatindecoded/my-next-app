@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import PageHeader from '@/components/ui/PageHeader';
 
 interface Defect {
   id: string;
@@ -77,24 +78,18 @@ export default function ProjectDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <Link
-            href="/builder"
-            className="text-indigo-600 hover:text-indigo-700 font-medium mb-4 inline-block"
-          >
+        <div className="text-center mb-4">
+          <Link href="/builder" className="text-indigo-600 hover:text-indigo-700 font-medium inline-block">
             ← Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            {projectName}
-          </h1>
-          <p className="text-gray-600">Audit defects and findings</p>
         </div>
+        <PageHeader title={projectName} subtitle="Audit defects and findings" align="center" />
 
         {/* Filter Tabs */}
-        <div className="flex gap-2 mb-6 bg-white rounded-lg shadow p-2">
+        <div className="flex justify-center gap-2 mb-6 bg-white rounded-lg card-shadow p-2">
           {[
             { label: 'All', value: 'ALL' as const, count: counts.total },
             { label: 'Low', value: 'LOW' as const, count: counts.low },
@@ -122,7 +117,7 @@ export default function ProjectDetail() {
         {/* Defects List */}
         <div className="space-y-4">
           {filteredDefects.length === 0 ? (
-            <div className="bg-white rounded-lg shadow p-8 text-center">
+            <div className="card card-shadow p-8 text-center">
               <p className="text-gray-500 text-lg">
                 {filter === 'ALL'
                   ? 'No defects found'

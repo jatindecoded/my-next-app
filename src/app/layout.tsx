@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { IconBuildingSkyscraper, IconClipboardList, IconUserShield } from "@tabler/icons-react";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -27,7 +28,46 @@ export default function RootLayout({
 			<head>
 				<link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
 			</head>
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+				{/* Mobile top nav */}
+				<nav className="border-b border-gray-200 bg-white/90 backdrop-blur md:hidden">
+					<div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+						<div className="flex items-center gap-2 text-gray-900 font-semibold">
+							<IconBuildingSkyscraper size={20} />
+							<span>Quality Audit</span>
+						</div>
+						<div className="flex items-center gap-4 text-sm">
+							<a href="/auditor" className="text-indigo-600 hover:text-indigo-700">Auditor</a>
+							<a href="/builder" className="text-indigo-600 hover:text-indigo-700">Builder</a>
+						</div>
+					</div>
+				</nav>
+
+				<div className="min-h-screen md:flex">
+					{/* Desktop sidebar */}
+					<aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-gray-200">
+						<div className="px-5 py-4 border-b border-gray-200 flex items-center gap-2 text-gray-900 font-semibold">
+							<IconBuildingSkyscraper size={20} />
+							<span>Quality Audit</span>
+						</div>
+						<nav className="p-3 space-y-1">
+							<a href="/auditor" className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-indigo-50 text-gray-800">
+								<IconClipboardList size={18} />
+								<span className="font-medium">Auditor</span>
+							</a>
+							<a href="/builder" className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-indigo-50 text-gray-800">
+								<IconUserShield size={18} />
+								<span className="font-medium">Builder</span>
+							</a>
+						</nav>
+					</aside>
+					<main className="flex-1 md:ml-64 bg-gray-50">
+						<div className="max-w-6xl mx-auto px-6 py-8">
+							{children}
+						</div>
+					</main>
+				</div>
+			</body>
 		</html>
 	);
 }

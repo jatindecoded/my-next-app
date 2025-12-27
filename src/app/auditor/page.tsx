@@ -40,16 +40,12 @@ export default function AuditorDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+    <div>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Construction Audits
-          </h1>
-          <p className="text-gray-600">
-            Select a project to start or continue auditing
-          </p>
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Auditor</h1>
+          <p className="text-gray-600">Select a project to start or continue checks</p>
         </div>
 
         {/* Projects Grid */}
@@ -63,7 +59,7 @@ export default function AuditorDashboard() {
               <Link
                 key={project.id}
                 href={`/auditor/projects/${project.id}`}
-                className="block bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
+                className="block bg-white border border-gray-200 rounded-xl card-shadow hover:border-indigo-400 hover:shadow-lg transition-all"
               >
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -71,7 +67,7 @@ export default function AuditorDashboard() {
                   </h3>
                   {project.location && (
                     <p className="text-sm text-gray-600 mb-4">
-                      📍 {project.location}
+                      {project.location}
                     </p>
                   )}
                   <div className="text-xs text-gray-400">
@@ -79,9 +75,7 @@ export default function AuditorDashboard() {
                     {new Date(project.created_at).toLocaleDateString()}
                   </div>
                   <div className="mt-4 pt-4 border-t border-gray-100">
-                    <span className="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 text-sm font-medium rounded-full">
-                      Start Audit →
-                    </span>
+                    <span className="btn btn-primary inline-block">Start Check</span>
                   </div>
                 </div>
               </Link>

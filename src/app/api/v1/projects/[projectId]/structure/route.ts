@@ -1,8 +1,17 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
-import { getDB, structure_nodes, template_audit_points, audit_templates } from '@/lib/db';
-import { eq } from 'drizzle-orm';
+import { 
+  getDB, 
+  structure_nodes, 
+  template_audit_points, 
+  audit_templates,
+  audit_items,
+  audit_sessions,
+  audit_media,
+  users,
+} from '@/lib/db';
+import { eq, and, inArray } from 'drizzle-orm';
 
 type TreeNode = {
   id: string;
@@ -53,6 +62,67 @@ export async function GET(req: NextRequest, ctx: RouteContext<'/api/v1/projects/
         audit_points = allPoints.filter((p) => p.applicable_level_type === node.level_type);
       }
 
+      // Include history for previous checks at this node across all sessions
+      type HistoryEntry = {
+        item_id: string;
+        status: 'PASS' | 'FAIL';
+        notes: string | null;
+        created_at: Date;
+        auditor_id: string;
+        auditor_name: string;
+        has_media: boolean;
+      };
+
+      let enriched_points = audit_points;
+      if (audit_points.length > 0) {
+        const itemsWithSessionAndUser = await db
+          .select({
+            item_id: audit_items.id,
+            status: audit_items.status,
+            notes: audit_items.notes,
+            created_at: audit_items.created_at,
+            template_audit_point_id: audit_items.template_audit_point_id,
+            auditor_id: audit_sessions.auditor_id,
+            auditor_name: users.name,
+          })
+          .from(audit_items)
+          .innerJoin(audit_sessions, eq(audit_items.audit_session_id, audit_sessions.id))
+          .innerJoin(users, eq(audit_sessions.auditor_id, users.id))
+          .where(
+            and(
+              eq(audit_items.structure_node_id, node.id),
+              eq(audit_sessions.project_id, projectId),
+            ),
+          );
+
+        const itemIds = itemsWithSessionAndUser.map((r) => r.item_id);
+        const mediaForItems = itemIds.length
+          ? await db
+              .select({ audit_item_id: audit_media.audit_item_id })
+              .from(audit_media)
+              .where(inArray(audit_media.audit_item_id, itemIds))
+          : [];
+        const itemsWithMediaSet = new Set(mediaForItems.map((m) => m.audit_item_id));
+
+        const historyByPointId = new Map<string, HistoryEntry[]>();
+        for (const r of itemsWithSessionAndUser) {
+          const entry: HistoryEntry = {
+            item_id: r.item_id,
+            status: r.status,
+            notes: r.notes,
+            created_at: r.created_at,
+            auditor_id: r.auditor_id,
+            auditor_name: r.auditor_name,
+            has_media: itemsWithMediaSet.has(r.item_id),
+          };
+          const list = historyByPointId.get(r.template_audit_point_id) || [];
+          list.push(entry);
+          historyByPointId.set(r.template_audit_point_id, list);
+        }
+
+        enriched_points = audit_points.map((p) => ({ ...p, history: historyByPointId.get(p.id) || [] }));
+      }
+
       // Build tree node with children
       const byId = new Map<string, TreeNode>();
       for (const n of nodes) {
@@ -71,7 +141,7 @@ export async function GET(req: NextRequest, ctx: RouteContext<'/api/v1/projects/
       }
 
       const treeNode = byId.get(nodeId)!;
-      return NextResponse.json({ node: treeNode, audit_points, breadcrumb });
+      return NextResponse.json({ node: treeNode, audit_points: enriched_points, breadcrumb });
     }
 
     // Return root tree

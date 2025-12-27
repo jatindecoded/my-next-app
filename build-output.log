@@ -1,0 +1,84 @@
+
+> inventory-management-system@0.1.0 build
+> next build
+
+(node:38120) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+   ▲ Next.js 15.5.9
+
+   Creating an optimized production build ...
+(node:38154) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:38187) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:38219) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ Compiled successfully in 959ms
+   Linting and checking validity of types ...
+
+./src/app/auditor/projects/[projectId]/page.tsx
+6:10  Warning: 'IconCompass' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/auditor/structure/[projectId]/[nodeId]/page.tsx
+9:29  Warning: 'CardFooter' is defined but never used.  @typescript-eslint/no-unused-vars
+13:24  Warning: 'IconLockOpen' is defined but never used.  @typescript-eslint/no-unused-vars
+13:55  Warning: 'IconPlaylistAdd' is defined but never used.  @typescript-eslint/no-unused-vars
+13:72  Warning: 'IconStar' is defined but never used.  @typescript-eslint/no-unused-vars
+60:10  Warning: 'collapsedHistory' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+60:28  Warning: 'setCollapsedHistory' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+61:23  Warning: 'setCollapseAll' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+266:23  Warning: 'severityVariant' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/layout.tsx
+11:7  Warning: 'geistMono' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/page.tsx
+7:41  Warning: 'CardHeader' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/ui/Breadcrumbs.tsx
+1:10  Warning: 'IconChevronCompactRight' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/ui/ProjectTreeNav.tsx
+6:45  Warning: 'IconCircleCheck' is defined but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+Using vars defined in .dev.vars
+   Collecting page data ...
+   Generating static pages (0/12) ...
+   Generating static pages (3/12) 
+   Generating static pages (6/12) 
+   Generating static pages (9/12) 
+ ✓ Generating static pages (12/12)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                            Size  First Load JS
+┌ ○ /                                                               3.66 kB         117 kB
+├ ○ /_not-found                                                       993 B         103 kB
+├ ƒ /api                                                              151 B         102 kB
+├ ƒ /api/seed                                                         151 B         102 kB
+├ ƒ /api/v1/audit-items                                               151 B         102 kB
+├ ƒ /api/v1/audit-items/[auditItemId]/media                           151 B         102 kB
+├ ƒ /api/v1/audit-sessions                                            151 B         102 kB
+├ ƒ /api/v1/audit-sessions/[sessionId]/checklist/[structureNodeId]    151 B         102 kB
+├ ƒ /api/v1/audit-sessions/[sessionId]/submit                         151 B         102 kB
+├ ƒ /api/v1/audit-sessions/[sessionId]/summary                        151 B         102 kB
+├ ƒ /api/v1/auditor/projects                                          151 B         102 kB
+├ ƒ /api/v1/builder/projects                                          151 B         102 kB
+├ ƒ /api/v1/builder/projects/[projectId]/defects                      151 B         102 kB
+├ ƒ /api/v1/projects/[projectId]/structure                            151 B         102 kB
+├ ○ /auditor                                                        3.07 kB         117 kB
+├ ƒ /auditor/audit/[projectId]/[nodeId]                              3.4 kB         117 kB
+├ ƒ /auditor/projects/[projectId]                                   3.58 kB         117 kB
+├ ƒ /auditor/structure/[projectId]/[nodeId]                         6.01 kB         120 kB
+├ ○ /builder                                                        2.58 kB         116 kB
+└ ƒ /builder/projects/[projectId]                                   1.84 kB         115 kB
++ First Load JS shared by all                                        102 kB
+  ├ chunks/255-cb395327542b56ef.js                                  45.9 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js                             54.2 kB
+  └ other shared chunks (total)                                     1.92 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

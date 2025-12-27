@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { IconBuildingSkyscraper, IconClipboardList, IconUserShield, IconChevronLeft, IconMenu2, IconX, IconHome } from '@tabler/icons-react';
 import ProjectTreeNav from '@/components/ui/ProjectTreeNav';
 import { ReactNode, useState } from 'react';
@@ -19,10 +20,10 @@ export default function LayoutClient({ children }: { children: ReactNode }) {
       {/* Mobile top nav */}
       <nav className="border-b border-gray-200 bg-white/90 backdrop-blur md:hidden sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2 text-gray-900 font-semibold">
+          <Link href="/" className="flex items-center gap-2 text-gray-900 font-semibold">
             <IconBuildingSkyscraper size={20} />
             <span>Quality Audit</span>
-          </a>
+          </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
@@ -36,14 +37,14 @@ export default function LayoutClient({ children }: { children: ReactNode }) {
       {mobileMenuOpen && (
         <div className="fixed inset-0 bg-white z-40 md:hidden overflow-y-auto pt-[57px]">
           <nav className="p-4 space-y-2">
-            <a
+            <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-50 text-gray-800"
             >
               <IconHome size={20} />
               <span className="font-medium">Home</span>
-            </a>
+            </Link>
             <a
               href="/auditor"
               onClick={() => setMobileMenuOpen(false)}
@@ -86,25 +87,25 @@ export default function LayoutClient({ children }: { children: ReactNode }) {
         {/* Desktop sidebar */}
         <aside className="hidden md:flex md:flex-col fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-gray-200 overflow-hidden">
           {/* Header */}
-          <a
+          <Link
             href="/"
             className="px-5 py-4 border-b border-gray-200 flex items-center gap-2 text-gray-900 font-semibold flex-shrink-0 hover:bg-gray-50 transition-colors"
           >
             <IconBuildingSkyscraper size={20} />
             <span>Quality Audit</span>
-          </a>
+          </Link>
 
           {/* Scrollable content */}
           <div className="flex-1 overflow-y-auto">
             {/* Main navigation */}
             <nav className="p-3 space-y-1 border-b border-gray-200">
-              <a
+              <Link
                 href="/"
                 className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-indigo-50 text-gray-800"
               >
                 <IconHome size={18} />
                 <span className="font-medium">Home</span>
-              </a>
+              </Link>
               <a
                 href="/auditor"
                 className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-indigo-50 text-gray-800"

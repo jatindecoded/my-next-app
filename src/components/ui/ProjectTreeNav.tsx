@@ -57,7 +57,7 @@ function TreeNodeItem({
         <Link
           href={href}
           className={`flex-1 flex items-center gap-1.5 px-2 py-1 rounded text-xs hover:bg-indigo-50 transition-colors ${
-            isActive ? 'bg-indigo-100 text-indigo-900 font-semibold' : 'text-gray-700'
+            isActive ? 'bg-indigo-100 text-indigo-900 font-bold' : 'text-gray-700'
           }`}
           style={{ marginLeft: `${hasChildren ? 0 : 1.25}rem` }}
         >
@@ -65,7 +65,7 @@ function TreeNodeItem({
             <IconCircleCheck size={12} className="text-green-600 flex-shrink-0" />
           )} */}
           <span className="truncate">{node.name}</span>
-          <span className="text-[10px] text-gray-400 uppercase tracking-wide">
+          <span className="text-xs text-muted-foreground uppercase font-semibold tracking-wide">
             {node.level_type}
           </span>
         </Link>

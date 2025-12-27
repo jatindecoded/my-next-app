@@ -10,7 +10,7 @@
 		"deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
 		"upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
 		"preview:dev": "opennextjs-cloudflare build && opennextjs-cloudflare preview --env dev",
-		"preview:prod": "opennextjs-cloudflare build && opennextjs-cloudflare preview --env production",
+		"preview:prod": "opennextjs-cloudflare build && opennextjs-cloudflare preview --env prod",
 		"cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts --env dev"
 	},
 	"dependencies": {

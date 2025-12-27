@@ -75,7 +75,7 @@ export default function Home() {
 			/>
 
 			{/* Development seed button */}
-			{process.env.NODE_ENV !== 'prod' && (
+			{process.env.NODE_ENV !== 'production' && (
 				<div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2">

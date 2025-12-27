@@ -13,7 +13,7 @@ import { getCloudflareContext } from '@opennextjs/cloudflare';
  */
 export async function POST() {
   // Security check - only allow in development
-  if (process.env.NODE_ENV === 'prod') {
+  if (process.env.NODE_ENV === 'production') {
     return NextResponse.json(
       { error: 'Seeding is disabled in production' },
       { status: 403 }

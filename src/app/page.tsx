@@ -73,7 +73,7 @@ export default function Home() {
 				<div className="absolute inset-0 pointer-events-none" 
         // style={{ background: 'radial-gradient(circle at 10% 20%, rgba(99,102,241,0.08), transparent 25%), radial-gradient(circle at 80% 0%, rgba(56,189,248,0.08), transparent 22%)' }} 
         />
-				<div className="relative max-w-4xl mx-auto md:text-center space-y-8 py-8 pt-24">
+				<div className="relative max-w-4xl mx-auto md:text-center space-y-8 py-8 pt-12">
 					<div className="mx-auto w-fit rounded-full bg-indigo-600/10 px-4 py-2 text-[12px] font-semibold uppercase tracking-wider text-indigo-700 font-mono">
 						Zero spreadsheets. Zero chats. Just audits.
 					</div>

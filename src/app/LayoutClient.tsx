@@ -18,15 +18,16 @@ export default function LayoutClient({ children }: { children: ReactNode }) {
   return (
     <>
       {/* Mobile top nav */}
-      <nav className="border-b border-gray-200 bg-white/90 backdrop-blur md:hidden sticky top-0 z-50">
+      <nav className="border-b border-gray-200 bg-white/90 backdrop-blur fixed w-full overscroll-none top-0 z-50"
+      >
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-gray-900 font-semibold">
+          <Link href="/" className="flex items-center gap-2 text-gray-900 font-semibold text-lg py-1">
             <IconBuildingSkyscraper size={20} />
             <span>RealEstate Audit</span>
           </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg border border-gray-200"
+            className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg border border-gray-200 md:hidden "
             aria-label={mobileMenuOpen ? 'Close navigation' : projectId ? 'Open project tree and menu' : 'Open navigation'}
           >
             {mobileMenuOpen ? <IconX size={22} /> : <IconMenu2 size={22} />}
@@ -93,7 +94,7 @@ export default function LayoutClient({ children }: { children: ReactNode }) {
 
       <div className="min-h-screen md:flex">
         {/* Desktop sidebar */}
-        <aside className="hidden md:flex md:flex-col fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-gray-200 overflow-hidden">
+        <aside className={`hidden ${projectId ? 'md:flex' : ''} md:flex-col fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-gray-200 overflow-hidden`}>
           {/* Header */}
           <Link
             href="/"
@@ -147,7 +148,9 @@ export default function LayoutClient({ children }: { children: ReactNode }) {
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 md:ml-64">
+        <main className={`flex-1 ${projectId ? 'md:ml-64' : ''} pt-16`} style={{
+          overscrollBehavior: 'auto'
+        }}>
           <div className="max-w-6xl mx-auto px-6 py-8">{children}</div>
         </main>
       </div>

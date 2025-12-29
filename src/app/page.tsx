@@ -73,11 +73,11 @@ export default function Home() {
 				<div className="absolute inset-0 pointer-events-none" 
         // style={{ background: 'radial-gradient(circle at 10% 20%, rgba(99,102,241,0.08), transparent 25%), radial-gradient(circle at 80% 0%, rgba(56,189,248,0.08), transparent 22%)' }} 
         />
-				<div className="relative max-w-4xl mx-auto md:text-center space-y-8 py-8">
+				<div className="relative max-w-4xl mx-auto md:text-center space-y-8 py-8 pt-24">
 					<div className="mx-auto w-fit rounded-full bg-indigo-600/10 px-4 py-2 text-[12px] font-semibold uppercase tracking-wider text-indigo-700 font-mono">
 						Zero spreadsheets. Zero chats. Just audits.
 					</div>
-					<h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight tracking-tight">
+					<h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tighter md:leading-[1em]">
             <span className=''>
 						Real Estate Audits? <br/>
             </span>
@@ -108,7 +108,7 @@ export default function Home() {
 			</section>
 
 			{/* Development seed button */}
-			{process.env.NODE_ENV !== 'production' && (
+			{/* {process.env.NODE_ENV !== 'production' && (
 				<div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2">
@@ -131,7 +131,103 @@ export default function Home() {
 						</p>
 					)}
 				</div>
-			)}
+			)} */}
+
+			{/* Demo Links Section */}
+			<div className="mt-12 rounded-2xl border-2 border-indigo-200 bg-gradient-to-br from-indigo-50 to-blue-50 p-8 shadow-md">
+				<div className="flex items-center gap-3 mb-6">
+					<div className="rounded-xl bg-indigo-600 p-3 text-white shadow-md">
+						<IconSparkles size={24} />
+					</div>
+					<div>
+						<h2 className="text-2xl font-bold text-gray-900">Try the Live Demo</h2>
+						<p className="text-sm text-gray-600">Explore fully functional pages with sample data</p>
+					</div>
+				</div>
+				
+				<div className="grid md:grid-cols-2 gap-6">
+					{/* Builder Demo Links */}
+					<div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+						<div className="flex items-center gap-2 mb-4">
+							<IconUserShield size={20} className="text-indigo-600" />
+							<h3 className="text-lg font-bold text-gray-900">Builder Console</h3>
+						</div>
+						<ul className="space-y-3">
+							<li>
+								<Link 
+									href="/builder" 
+									className="flex items-center justify-between group hover:bg-indigo-50 p-3 rounded-lg transition-colors border border-transparent hover:border-indigo-200"
+								>
+									<span className="text-sm font-medium text-gray-700 group-hover:text-indigo-700">All Projects Dashboard</span>
+									<span className="text-indigo-600 group-hover:translate-x-1 transition-transform">→</span>
+								</Link>
+							</li>
+							<li>
+								<Link 
+									href="/builder?view=defects" 
+									className="flex items-center justify-between group hover:bg-red-50 p-3 rounded-lg transition-colors border border-transparent hover:border-red-200"
+								>
+									<span className="text-sm font-medium text-gray-700 group-hover:text-red-700">All Failures Across Projects</span>
+									<span className="text-red-600 group-hover:translate-x-1 transition-transform">→</span>
+								</Link>
+							</li>
+							<li>
+								<Link 
+									href="/builder/projects/e738fc4c-c4ea-47c1-a586-b9842cd901d7" 
+									className="flex items-center justify-between group hover:bg-amber-50 p-3 rounded-lg transition-colors border border-transparent hover:border-amber-200"
+								>
+									<span className="text-sm font-medium text-gray-700 group-hover:text-amber-700">Project Defects Details</span>
+									<span className="text-amber-600 group-hover:translate-x-1 transition-transform">→</span>
+								</Link>
+							</li>
+						</ul>
+					</div>
+
+					{/* Auditor Demo Links */}
+					<div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+						<div className="flex items-center gap-2 mb-4">
+							<IconClipboardList size={20} className="text-emerald-600" />
+							<h3 className="text-lg font-bold text-gray-900">Auditor Console</h3>
+						</div>
+						<ul className="space-y-3">
+							<li>
+								<Link 
+									href="/auditor" 
+									className="flex items-center justify-between group hover:bg-emerald-50 p-3 rounded-lg transition-colors border border-transparent hover:border-emerald-200"
+								>
+									<span className="text-sm font-medium text-gray-700 group-hover:text-emerald-700">Auditor Dashboard</span>
+									<span className="text-emerald-600 group-hover:translate-x-1 transition-transform">→</span>
+								</Link>
+							</li>
+							<li>
+								<Link 
+									href="/auditor/projects/e738fc4c-c4ea-47c1-a586-b9842cd901d7" 
+									className="flex items-center justify-between group hover:bg-sky-50 p-3 rounded-lg transition-colors border border-transparent hover:border-sky-200"
+								>
+									<span className="text-sm font-medium text-gray-700 group-hover:text-sky-700">Project Structure Navigator</span>
+									<span className="text-sky-600 group-hover:translate-x-1 transition-transform">→</span>
+								</Link>
+							</li>
+							<li>
+								<Link 
+									href="/auditor/structure/e738fc4c-c4ea-47c1-a586-b9842cd901d7/bf367a46-f405-4456-b000-cae497f2414e/" 
+									className="flex items-center justify-between group hover:bg-purple-50 p-3 rounded-lg transition-colors border border-transparent hover:border-purple-200"
+								>
+									<span className="text-sm font-medium text-gray-700 group-hover:text-purple-700">Audit History & Details</span>
+									<span className="text-purple-600 group-hover:translate-x-1 transition-transform">→</span>
+								</Link>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<div className="mt-6 p-4 bg-white rounded-lg border border-indigo-100">
+					<p className="text-xs text-gray-600 text-center">
+						<span className="font-semibold text-indigo-700">Demo data included:</span> 3 towers × 10 floors × 4 units × 7 rooms = 841 checkpoints with sample audit results
+					</p>
+				</div>
+			</div>
+
 
 			{/* Value props */}
 			<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">

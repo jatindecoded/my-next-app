@@ -35,7 +35,11 @@ export default function RootLayout({
 			<head>
 				<link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
 			</head>
-			<body className={`${geistSans.variable} ${jetBrainsMono.variable} tracking-tight antialiased`}>
+			<body className={`${geistSans.variable} ${jetBrainsMono.variable} tracking-tight antialiased overflow-auto`}
+      // style={{
+      //   overscrollBehavior: 'none'
+      // }}
+      >
 				<LayoutClient>{children}</LayoutClient>
 			</body>
 		</html>

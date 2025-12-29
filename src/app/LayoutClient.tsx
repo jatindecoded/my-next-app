@@ -9,7 +9,7 @@ import { ReactNode, useState } from 'react';
 export default function LayoutClient({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+
   // Determine if we're on a project page and extract project ID
   const projectMatch = pathname.match(/\/(auditor|builder)\/(?:projects|structure|audit)\/([^/]+)/);
   const projectId = projectMatch ? projectMatch[2] : null;
@@ -22,7 +22,7 @@ export default function LayoutClient({ children }: { children: ReactNode }) {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 text-gray-900 font-semibold">
             <IconBuildingSkyscraper size={20} />
-            <span>Quality Audit</span>
+            <span>RealEstate Audit</span>
           </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -30,9 +30,13 @@ export default function LayoutClient({ children }: { children: ReactNode }) {
             aria-label={mobileMenuOpen ? 'Close navigation' : projectId ? 'Open project tree and menu' : 'Open navigation'}
           >
             {mobileMenuOpen ? <IconX size={22} /> : <IconMenu2 size={22} />}
-            <span className="text-sm font-semibold leading-none">
-              {mobileMenuOpen ? 'Close' : projectId ? `View Project Tree` : 'Menu'}
-            </span>
+            {
+              projectId && (
+                <span className="text-sm font-semibold leading-none">
+                  {mobileMenuOpen ? 'Close' : projectId ? `View Project Tree` : 'Menu'}
+                </span>
+              )
+            }
           </button>
         </div>
       </nav>
@@ -96,7 +100,7 @@ export default function LayoutClient({ children }: { children: ReactNode }) {
             className="px-5 py-4 border-b border-gray-200 flex items-center gap-2 text-gray-900 font-semibold flex-shrink-0 hover:bg-gray-50 transition-colors"
           >
             <IconBuildingSkyscraper size={20} />
-            <span>Quality Audit</span>
+            <span>RealEstate Audit</span>
           </Link>
 
           {/* Scrollable content */}

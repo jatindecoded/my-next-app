@@ -399,8 +399,11 @@ export default function StructureDetail() {
         {/* Child Nodes */}
         {node.children && node.children.length > 0 && (
           <div className='pt-8'>
-            <h2 className="text-md font-bold text-gray-900 mb-4">
-              {node.children[0].level_type}S <span className="text-xs text-muted-foreground font-semibold">in {node.name}</span>
+            <h2 className="text-lg font-bold text-gray-900 mb-4">
+              {`Total `}
+              {node.children.length + " "}
+              <span className='capitalize'>{node.children[0].level_type.toLocaleLowerCase()}s </span>
+              <span className="text-xs text-muted-foreground font-semibold">inside {node.name}</span>
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
               {node.children.map((child) => (

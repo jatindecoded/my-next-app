@@ -1,114 +1,115 @@
 'use client';
 
 import Link from 'next/link';
-import { IconClipboardList, IconUserShield, IconDatabase, IconGauge, IconShieldCheck, IconCloudDownload, IconDeviceMobileCheck, IconSparkles, IconPointerExclamation, IconPointerCheck, IconPointerPause, IconPointerUp, IconPointer, IconDashboard, IconCross, IconCrossOff, IconCrosshair, IconX, IconXd } from '@tabler/icons-react';
+import { IconClipboardList, IconUserShield, IconGauge, IconShieldCheck, IconCloudDownload, IconPointerCheck, IconPointerUp, IconPointer, IconDashboard, IconBuildingSkyscraper, IconAlertTriangle } from '@tabler/icons-react';
 import PageHeader from '@/components/ui/PageHeader';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card as UICard, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/cards/Card';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 
 interface HomeCardProps {
-	href: string;
-	icon: ReactNode;
-	title: string;
-	description: string;
-	buttonLabel: string;
-	buttonVariant?: 'default' | 'outline';
+  href: string;
+  icon: ReactNode;
+  title: string;
+  description: string;
+  buttonLabel: string;
+  buttonVariant?: 'default' | 'outline';
 }
 
 function HomeCard({ href, icon, title, description, buttonLabel, buttonVariant = 'default' }: HomeCardProps) {
-	return (
-		<Card className="text-center card-shadow hover:-translate-y-0.5 transition-transform h-full">
-			<Link href={href} className="h-full">
-				<CardContent className="space-y-4 my-8 flex flex-col justify-center">
-					<div className='flex items-center justify-center'>
-						{icon}
-					</div>
-					<CardTitle className="flex items-center justify-center gap-2 text-lg">
-						<span>{title}</span>
-					</CardTitle>
-					<p className="text-sm text-gray-600">{description}</p>
-				</CardContent>
-				<CardFooter>
-					<Button variant={buttonVariant} className="w-full justify-center">
-						{buttonLabel}
-					</Button>
-				</CardFooter>
-			</Link>
-		</Card>
-	);
+  return (
+    <UICard className="text-center card-shadow hover:-translate-y-0.5 transition-transform h-full">
+      <Link href={href} className="h-full">
+        <CardContent className="space-y-4 my-8 flex flex-col justify-center">
+          <div className='flex items-center justify-center'>
+            {icon}
+          </div>
+          <CardTitle className="flex items-center justify-center gap-2 text-lg">
+            <span>{title}</span>
+          </CardTitle>
+          <p className="text-sm text-gray-600">{description}</p>
+        </CardContent>
+        <CardFooter>
+          <Button variant={buttonVariant} className="w-full justify-center">
+            {buttonLabel}
+          </Button>
+        </CardFooter>
+      </Link>
+    </UICard>
+  );
 }
 
 export default function Home() {
-	const [seeding, setSeeding] = useState(false);
-	const [seedResult, setSeedResult] = useState<{ success?: boolean; message?: string; error?: string } | null>(null);
+  const [seeding, setSeeding] = useState(false);
+  const [seedResult, setSeedResult] = useState<{ success?: boolean; message?: string; error?: string } | null>(null);
 
-	const handleSeed = async () => {
-		setSeeding(true);
-		setSeedResult(null);
-		
-		try {
-			const response = await fetch('/api/seed', { method: 'POST' });
-			const data = await response.json() as { success?: boolean; message?: string; error?: string };
-			
-			if (response.ok) {
-				setSeedResult({ success: true, message: data.message || 'Seeded successfully' });
-				// Refresh the page after 2 seconds to show new data
-				setTimeout(() => window.location.reload(), 2000);
-			} else {
-				setSeedResult({ success: false, error: data.error || data.message || 'Failed to seed' });
-			}
-		} catch {
-			setSeedResult({ success: false, error: 'Failed to seed database' });
-		} finally {
-			setSeeding(false);
-		}
-	};
+  const handleSeed = async () => {
+    setSeeding(true);
+    setSeedResult(null);
 
-	return (
-		<div className="space-y-10">
-			{/* Hero */}
-			<section className="relative overflow-hidden rounded-3xl md:px-6 py-10">
-				<div className="absolute inset-0 pointer-events-none" 
+    try {
+      const response = await fetch('/api/seed', { method: 'POST' });
+      const data = await response.json() as { success?: boolean; message?: string; error?: string };
+
+      if (response.ok) {
+        setSeedResult({ success: true, message: data.message || 'Seeded successfully' });
+        // Refresh the page after 2 seconds to show new data
+        setTimeout(() => window.location.reload(), 2000);
+      } else {
+        setSeedResult({ success: false, error: data.error || data.message || 'Failed to seed' });
+      }
+    } catch {
+      setSeedResult({ success: false, error: 'Failed to seed database' });
+    } finally {
+      setSeeding(false);
+    }
+  };
+
+  return (
+    <div className="space-y-12 px-2 md:px-6 max-w-6xl mx-auto]">
+      {/* Hero */}
+      <section className="relative overflow-hidden rounded-3xl md:px-6 py-10">
+        <div className="absolute inset-0 pointer-events-none"
         // style={{ background: 'radial-gradient(circle at 10% 20%, rgba(99,102,241,0.08), transparent 25%), radial-gradient(circle at 80% 0%, rgba(56,189,248,0.08), transparent 22%)' }} 
         />
-				<div className="relative max-w-4xl mx-auto md:text-center space-y-8 py-8 pt-12">
-					<div className="mx-auto w-fit rounded-full bg-indigo-600/10 px-4 py-2 text-[12px] font-semibold uppercase tracking-wider text-indigo-700 font-mono">
-						Zero spreadsheets. Zero chats. Just audits.
-					</div>
-					<h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tighter md:leading-[1em]">
+        <div className="relative max-w-4xl mx-auto text-center space-y-8 pb-24 pt-12">
+          <div className="mx-auto w-fit rounded-full bg-emerald-600/10 px-4 py-2 text-[12px] font-semibold uppercase tracking-wider text-emerald-700 font-mono">
+            Zero spreadsheets. Zero chats. Just audits.
+          </div>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tighter leading-[1em]">
             <span className=''>
-						Real Estate Audits? <br/>
+              Real Estate Audits? <br />
             </span>
             <span className=''>
-            Say goodbye to pen-paper notes, Google Sheets, Excel, and WhatsApp.
+              Say goodbye to pen-paper notes, Google Sheets, Excel, and WhatsApp.
             </span>
-					</h1>
-					{/* <p className="text-lg md:text-xl text-gray-800 max-w-3xl mx-auto font-semibold">
+          </h1>
+          {/* <p className="text-lg md:text-xl text-gray-800 max-w-3xl mx-auto font-semibold">
 						Run every checklist, photo, punch list, and handover in one fast workflow. Evidence auto-packaged, teams aligned, no manual retyping.
 					</p> */}
-					{/* <p className="text-sm md:text-base text-gray-600 max-w-3xl mx-auto tracking-tight font-semibold">
+          {/* <p className="text-sm md:text-base text-gray-600 max-w-3xl mx-auto tracking-tight font-semibold">
 						No more exporting to Excel, printing audit pages, chasing WhatsApp approvals, or copying notes from paper to sheets.
 					</p> */}
-					<div className="flex flex-wrap md:justify-center gap-3 mt-2">
-						<Link href="/auditor" className="">
-							<Button className=" justify-center px-5 py-3 text-emerald-50 p-2 bg-emerald-700 hover:bg-emerald-800"><IconPointer/>Start auditing now</Button>
-						</Link>
-						<Link href="/builder" className="">
-							<Button variant="outline" className=" justify-center px-5 py-3"><IconDashboard/>See builder console</Button>
-						</Link>
-					</div>
-					{/* <div className="flex flex-wrap justify-center gap-2 text-xs font-semibold text-gray-800 mt-4">
+          <div className="flex flex-wrap justify-center gap-3 mt-6">
+            <Link href="/auditor" className="">
+              <Button size={'lg'} className=" justify-center px-5 py-3 text-emerald-50 p-2 bg-emerald-700 hover:bg-emerald-800"><IconPointer />Start auditing now</Button>
+            </Link>
+            <Link href="/builder" className="">
+              <Button size={'lg'} variant="outline" className=" justify-center px-5 py-3"><IconDashboard />See builder console</Button>
+            </Link>
+          </div>
+          {/* <div className="flex flex-wrap justify-center gap-2 text-xs font-semibold text-gray-800 mt-4">
 						<div className="px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 flex gap-2 items-center min-w-[250px] justify-center"><IconX size={12}/>No clipboards, no retyping</div>
 						<div className="px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 flex gap-2 items-center min-w-[250px] justify-center"><IconX size={12}/>Goodbye Google Sheets & Excel</div>
 						<div className="px-3 py-1 rounded-full bg-amber-50 border border-amber-100 flex gap-2 items-center min-w-[250px] justify-center"><IconX size={12}/>No more WhatsApp/email chases</div>
 					</div> */}
-				</div>
-			</section>
+        </div>
+      </section>
 
-			{/* Development seed button */}
-			{/* {process.env.NODE_ENV !== 'production' && (
+      {/* Development seed button */}
+      {/* {process.env.NODE_ENV !== 'production' && (
 				<div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2">
@@ -133,184 +134,242 @@ export default function Home() {
 				</div>
 			)} */}
 
-			{/* Demo Links Section */}
-			<div className="mt-12 rounded-2xl border-2 border-indigo-200 bg-gradient-to-br from-indigo-50 to-blue-50 p-8 shadow-md">
-				<div className="flex items-center gap-3 mb-6">
-					<div className="rounded-xl bg-indigo-600 p-3 text-white shadow-md">
-						<IconSparkles size={24} />
-					</div>
-					<div>
-						<h2 className="text-2xl font-bold text-gray-900">Try the Live Demo</h2>
-						<p className="text-sm text-gray-600">Explore fully functional pages with sample data</p>
-					</div>
-				</div>
-				
-				<div className="grid md:grid-cols-2 gap-6">
-					{/* Builder Demo Links */}
-					<div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-						<div className="flex items-center gap-2 mb-4">
-							<IconUserShield size={20} className="text-indigo-600" />
-							<h3 className="text-lg font-bold text-gray-900">Builder Console</h3>
-						</div>
-						<ul className="space-y-3">
-							<li>
-								<Link 
-									href="/builder" 
-									className="flex items-center justify-between group hover:bg-indigo-50 p-3 rounded-lg transition-colors border border-transparent hover:border-indigo-200"
-								>
-									<span className="text-sm font-medium text-gray-700 group-hover:text-indigo-700">All Projects Dashboard</span>
-									<span className="text-indigo-600 group-hover:translate-x-1 transition-transform">→</span>
-								</Link>
-							</li>
-							<li>
-								<Link 
-									href="/builder?view=defects" 
-									className="flex items-center justify-between group hover:bg-red-50 p-3 rounded-lg transition-colors border border-transparent hover:border-red-200"
-								>
-									<span className="text-sm font-medium text-gray-700 group-hover:text-red-700">All Failures Across Projects</span>
-									<span className="text-red-600 group-hover:translate-x-1 transition-transform">→</span>
-								</Link>
-							</li>
-							<li>
-								<Link 
-									href="/builder/projects/e738fc4c-c4ea-47c1-a586-b9842cd901d7" 
-									className="flex items-center justify-between group hover:bg-amber-50 p-3 rounded-lg transition-colors border border-transparent hover:border-amber-200"
-								>
-									<span className="text-sm font-medium text-gray-700 group-hover:text-amber-700">Project Defects Details</span>
-									<span className="text-amber-600 group-hover:translate-x-1 transition-transform">→</span>
-								</Link>
-							</li>
-						</ul>
-					</div>
+      {/* Demo Links Section */}
+      <div className="mt-12 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true" />
+        <div className="flex flex-col gap-1 mb-6">
+          {/* <p className="inline-flex w-fit items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-emerald-700">Try live</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-[1.15] tracking-tight">Explore the console.</h2> */}
 
-					{/* Auditor Demo Links */}
-					<div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-						<div className="flex items-center gap-2 mb-4">
-							<IconClipboardList size={20} className="text-emerald-600" />
-							<h3 className="text-lg font-bold text-gray-900">Auditor Console</h3>
-						</div>
-						<ul className="space-y-3">
-							<li>
-								<Link 
-									href="/auditor" 
-									className="flex items-center justify-between group hover:bg-emerald-50 p-3 rounded-lg transition-colors border border-transparent hover:border-emerald-200"
-								>
-									<span className="text-sm font-medium text-gray-700 group-hover:text-emerald-700">Auditor Dashboard</span>
-									<span className="text-emerald-600 group-hover:translate-x-1 transition-transform">→</span>
-								</Link>
-							</li>
-							<li>
-								<Link 
-									href="/auditor/projects/e738fc4c-c4ea-47c1-a586-b9842cd901d7" 
-									className="flex items-center justify-between group hover:bg-sky-50 p-3 rounded-lg transition-colors border border-transparent hover:border-sky-200"
-								>
-									<span className="text-sm font-medium text-gray-700 group-hover:text-sky-700">Project Structure Navigator</span>
-									<span className="text-sky-600 group-hover:translate-x-1 transition-transform">→</span>
-								</Link>
-							</li>
-							<li>
-								<Link 
-									href="/auditor/structure/e738fc4c-c4ea-47c1-a586-b9842cd901d7/bf367a46-f405-4456-b000-cae497f2414e/" 
-									className="flex items-center justify-between group hover:bg-purple-50 p-3 rounded-lg transition-colors border border-transparent hover:border-purple-200"
-								>
-									<span className="text-sm font-medium text-gray-700 group-hover:text-purple-700">Audit History & Details</span>
-									<span className="text-purple-600 group-hover:translate-x-1 transition-transform">→</span>
-								</Link>
-							</li>
-						</ul>
-					</div>
-				</div>
+          <div className="mb-6 flex flex-col gap-1">
+            <p className="text-xs font-bold uppercase tracking-wide text-emerald-700 ">Try live</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-[1em] tracking-tight">Try our Building Audit System.</h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-5">
+            <Card
+              variant="demo"
+              icon={<IconUserShield size={20} className="text-gray-700" />}
+              heading="Builder Console"
+            >
+              <ul className="space-y-3">
+                <li>
+                  <Link
+                    href="/builder"
+                    className="flex items-center justify-between group hover:bg-gray-100 p-3 rounded-lg transition-colors border border-transparent hover:border-gray-300"
+                  >
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">All Projects Dashboard</span>
+                    <span className="text-gray-700 group-hover:translate-x-1 transition-transform">→</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/builder?view=defects"
+                    className="flex items-center justify-between group hover:bg-gray-100 p-3 rounded-lg transition-colors border border-transparent hover:border-gray-300"
+                  >
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">All Failures Across Projects</span>
+                    <span className="text-gray-700 group-hover:translate-x-1 transition-transform">→</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/builder/projects/e738fc4c-c4ea-47c1-a586-b9842cd901d7"
+                    className="flex items-center justify-between group hover:bg-gray-100 p-3 rounded-lg transition-colors border border-transparent hover:border-gray-300"
+                  >
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Project Defects Details</span>
+                    <span className="text-gray-700 group-hover:translate-x-1 transition-transform">→</span>
+                  </Link>
+                </li>
+              </ul>
+            </Card>
 
-				<div className="mt-6 p-4 bg-white rounded-lg border border-indigo-100">
-					<p className="text-xs text-gray-600 text-center">
-						<span className="font-semibold text-indigo-700">Demo data included:</span> 3 towers × 10 floors × 4 units × 7 rooms = 841 checkpoints with sample audit results
-					</p>
-				</div>
-			</div>
+            <Card
+              variant="demo"
+              icon={<IconClipboardList size={20} className="text-gray-700" />}
+              heading="Auditor Console"
+            >
+              <ul className="space-y-3">
+                <li>
+                  <Link
+                    href="/auditor"
+                    className="flex items-center justify-between group hover:bg-gray-100 p-3 rounded-lg transition-colors border border-transparent hover:border-gray-300"
+                  >
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Auditor Dashboard</span>
+                    <span className="text-gray-700 group-hover:translate-x-1 transition-transform">→</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/auditor/projects/e738fc4c-c4ea-47c1-a586-b9842cd901d7"
+                    className="flex items-center justify-between group hover:bg-gray-100 p-3 rounded-lg transition-colors border border-transparent hover:border-gray-300"
+                  >
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Project Structure Navigator</span>
+                    <span className="text-gray-700 group-hover:translate-x-1 transition-transform">→</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/auditor/structure/e738fc4c-c4ea-47c1-a586-b9842cd901d7/bf367a46-f405-4456-b000-cae497f2414e/"
+                    className="flex items-center justify-between group hover:bg-gray-100 p-3 rounded-lg transition-colors border border-transparent hover:border-gray-300"
+                  >
+                    <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Audit History & Details</span>
+                    <span className="text-gray-700 group-hover:translate-x-1 transition-transform">→</span>
+                  </Link>
+                </li>
+              </ul>
+            </Card>
+          </div>
+
+          <div className="mt-6 p-4 bg-white rounded-xl border border-gray-200 text-center text-xs text-gray-600">
+            <p><span className="font-semibold text-gray-800">Demo data:</span> 3 towers × 10 floors × 4 units × 7 rooms = 841 checkpoints</p>
+          </div>
+        </div>
 
 
-			{/* Value props */}
-			<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-				<div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm flex items-start gap-3">
-					<div className="rounded-lg bg-indigo-50 p-2 text-indigo-700">
-						<IconGauge size={20} />
-					</div>
-					<div>
-						<p className="font-semibold text-sm text-gray-900">Risk-first dashboards</p>
-						<p className="text-sm text-gray-600">Auto-prioritize hot spots by severity, repeat defects, and fix lead time.</p>
-					</div>
-				</div>
-				<div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm flex items-start gap-3">
-					<div className="rounded-lg bg-emerald-50 p-2 text-emerald-700">
-						<IconShieldCheck size={20} />
-					</div>
-					<div>
-						<p className="font-semibold text-sm text-gray-900">Evidence that sticks</p>
-						<p className="text-sm text-gray-600">Geo/time-stamped photos, checklist sign-offs, and audit trails built-in.</p>
-					</div>
-				</div>
-				<div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm flex items-start gap-3">
-					<div className="rounded-lg bg-sky-50 p-2 text-sky-700">
-						<IconDeviceMobileCheck size={20} />
-					</div>
-					<div>
-						<p className="font-semibold text-sm text-gray-900">Field-proof workflow</p>
-						<p className="text-sm text-gray-600">Offline-first audits, fast capture, and one-tap tasking to trades.</p>
-					</div>
-				</div>
-				<div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm flex items-start gap-3">
-					<div className="rounded-lg bg-amber-50 p-2 text-amber-700">
-						<IconCloudDownload size={20} />
-					</div>
-					<div>
-						<p className="font-semibold text-sm text-gray-900">Plug into your stack</p>
-						<p className="text-sm text-gray-600">APIs and webhooks to push findings into PM, chat, or BI tools.</p>
-					</div>
-				</div>
-			</div>
+        {/* Impact stats */}
+        <div className="mt-12">
+          <div className="mb-6 flex flex-col gap-1">
+            <p className="text-xs font-bold uppercase tracking-wide text-emerald-700">Impact</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-[1.15] tracking-tight">Builders ship faster.</h2>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            <Card
+              variant="stat"
+              pill="Handover speed"
+              stat="-30%"
+              description="Time to close"
+            />
+            <Card
+              variant="stat"
+              pill="Rework avoided"
+              stat="-42%"
+              description="Repeat defects"
+            />
+            <Card
+              variant="stat"
+              pill="Source of truth"
+              stat="1"
+              description="Live proof dashboard"
+            />
+          </div>
+        </div>
 
-			{/* Highlights */}
-			<div className="mt-12 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-				<div className="flex items-center gap-2 mb-4">
-					<div className="rounded-lg bg-indigo-50 p-2 text-indigo-700">
-						<IconSparkles size={20} />
-					</div>
-					<h3 className="text-lg font-semibold text-gray-900">Built for modern construction teams</h3>
-				</div>
-				<div className="grid md:grid-cols-3 gap-4 text-sm text-gray-700">
-					<div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
-						<p className="font-semibold text-gray-900 mb-1">Speed to insight</p>
-						<p>Inline audits, no tab-hopping, and instant pass/fail with evidence—zero manual collation.</p>
-					</div>
-					<div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
-						<p className="font-semibold text-gray-900 mb-1">Quality confidence</p>
-						<p>Templates with must-pass gates, auto-escalations, and readiness reports.</p>
-					</div>
-					<div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
-						<p className="font-semibold text-gray-900 mb-1">Team alignment</p>
-						<p>Homeowners, builders, and auditors see the same live state—no spreadsheets, no email chases.</p>
-					</div>
-				</div>
-			</div>
+        {/* Why builders switch */}
+        <div className="mt-12 rounded-3xl border border-gray-200 bg-gradient-to-br from-slate-50 via-slate-50 to-slate-100 p-8 shadow-lg grid gap-8 w-full">
+          <div className="space-y-4">
+            {/* <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-emerald-700 mb-2">
+              <IconPointerCheck size={14} /> Built for builders
+            </div>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-[1.15] tracking-tight">Accelerate every handover.</h2> */}
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full mt-8">
-				<HomeCard
-					href="/auditor"
-					icon={<IconClipboardList size={36} />}
-					title="Auditor"
-					description="Perform checks, collect defects, and add evidence"
-					buttonLabel="Start Auditing"
-				/>
-				<HomeCard
-					href="/builder"
-					icon={<IconUserShield size={36} />}
-					title="Builder"
-					description="View dashboards, track quality, analyze trends"
-					buttonLabel="View Dashboard"
-					buttonVariant="outline"
-				/>
-			</div>
+          <div className="mb-6 flex flex-col gap-1">
+            <p className="text-xs font-bold uppercase tracking-wide text-emerald-700">Build for Builders</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-[1.15] tracking-tight">Accelerate every handover.</h2>
+          </div>
+            <ul className="space-y-2.5 text-sm font-medium text-gray-700">
+              <li className="flex gap-3 items-start">
+                <span className="mt-1.5 h-2 w-2 rounded-full bg-emerald-600 flex-shrink-0" />
+                <span>One queue by severity—no side chats</span>
+              </li>
+              <li className="flex gap-3 items-start">
+                <span className="mt-1.5 h-2 w-2 rounded-full bg-emerald-600 flex-shrink-0" />
+                <span>Proof on every item. Proof, not chasing.</span>
+              </li>
+              <li className="flex gap-3 items-start">
+                <span className="mt-1.5 h-2 w-2 rounded-full bg-emerald-600 flex-shrink-0" />
+                <span>Live reports. Clients see progress.</span>
+              </li>
+            </ul>
+            <div className="flex gap-3 pt-2">
+              <Link href="/builder" className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-4 py-2 text-sm font-bold text-white shadow-md hover:bg-emerald-800 transition-colors">
+                <IconDashboard size={16} /> Builder console
+              </Link>
+              <Link href="/auditor" className="inline-flex items-center gap-2 rounded-full border border-gray-300 px-4 py-2 text-sm font-bold text-gray-900 hover:bg-gray-100 transition-colors">
+                <IconClipboardList size={16} /> Auditor flow
+              </Link>
+            </div>
+          </div>
+          {/* <div className="grid gap-4">
+            <Card
+              variant="feature"
+              icon={<IconGauge size={16} className="text-emerald-600" />}
+              heading="Severity board"
+              description="Sort by urgency"
+            />
+            <Card
+              variant="feature"
+              icon={<IconShieldCheck size={16} className="text-emerald-600" />}
+              heading="Photo proof"
+              description="Evidence required"
+            />
+            <Card
+              variant="feature"
+              icon={<IconCloudDownload size={16} className="text-emerald-600" />}
+              heading="Live reports"
+              description="Share with clients"
+            />
+          </div> */}
+        </div>
 
-		</div>
-	);
+        {/* Product tour */}
+        <div className="mt-12 grid lg:grid-cols-3 gap-5">
+          <div className="lg:col-span-1 rounded-3xl border border-gray-200 bg-gradient-to-br from-slate-50 via-slate-50 to-slate-10 p-6 shadow-md">
+            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-emerald-700 mb-3">Tour</div>
+            <h3 className="text-2xl md:text-3xl font-extrabold text-gray-900 leading-[1.15] tracking-tight mb-2">See it in action.</h3>
+            <p className="text-sm font-medium text-gray-700">Four steps. One workflow.</p>
+          </div>
+          <div className="lg:col-span-2 grid md:grid-cols-2 gap-4">
+            <Card
+              variant="step"
+              href="/auditor"
+              icon={<IconClipboardList size={18} className="text-emerald-600" />}
+              heading="Capture"
+              description="Checklist + photos"
+              linkText="Start audit"
+            />
+            <Card
+              variant="step"
+              href="/builder?view=defects"
+              icon={<IconAlertTriangle size={18} className="text-emerald-600" />}
+              heading="Prioritize"
+              description="Sort by urgency"
+              linkText="View failures"
+            />
+            <Card
+              variant="step"
+              href="/builder/projects/e738fc4c-c4ea-47c1-a586-b9842cd901d7"
+              icon={<IconBuildingSkyscraper size={18} className="text-emerald-600" />}
+              heading="Drill in"
+              description="Spot repeats fast"
+              linkText="See project"
+            />
+            <Card
+              variant="step"
+              href="/auditor/structure/e738fc4c-c4ea-47c1-a586-b9842cd901d7/bf367a46-f405-4456-b000-cae497f2414e/"
+              icon={<IconPointerUp size={18} className="text-emerald-600" />}
+              heading="Review"
+              description="Evidence trail"
+              linkText="See history"
+            />
+          </div>
+        </div>
+
+        {/* Final CTA */}
+        <div className="mt-12 rounded-3xl bg-gradient-to-r from-emerald-700 to-emerald-800 text-white p-8 shadow-lg flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="space-y-3">
+            <p className="text-xs font-bold uppercase tracking-wide text-emerald-50">Ready?</p>
+            <h3 className="text-3xl md:text-4xl font-extrabold text-white leading-[1.15] tracking-tight">Start auditing now.</h3>
+            <p className="text-sm font-medium text-emerald-50">No spreadsheets. No spreadsheets. Just proof.</p>
+          </div>
+          <div className="flex gap-3">
+            <Link href="/auditor" className="inline-flex items-center gap-2 rounded-full bg-white text-emerald-700 px-5 py-3 font-bold shadow-sm hover:bg-emerald-50 transition-colors">
+              <IconPointer size={18} /> Start audit
+            </Link>
+            <Link href="/builder?view=defects" className="inline-flex items-center gap-2 rounded-full border border-white px-5 py-3 font-bold text-white hover:bg-white/10 transition-colors">
+              <IconAlertTriangle size={18} /> View fails
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -262,7 +262,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-[1.15] tracking-tight">Accelerate every handover.</h2> */}
 
           <div className="mb-6 flex flex-col gap-1">
-            <p className="text-xs font-bold uppercase tracking-wide text-emerald-700">Build for Builders</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-emerald-700">Built for Builders</p>
             <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-[1.15] tracking-tight">Accelerate every handover.</h2>
           </div>
             <ul className="space-y-2.5 text-sm font-medium text-gray-700">

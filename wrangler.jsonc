@@ -53,7 +53,7 @@
 					"migrations_dir": "./drizzle/migrations",
 					"remote": true
 				}
-			]
+			],"name": "my-next-app"
 		}
 	}
 }
